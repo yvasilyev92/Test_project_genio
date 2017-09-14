@@ -28,7 +28,7 @@ public class EarthquakeSaved extends Fragment{
     private Realm realm;
     private RealmConfiguration realmConfiguration;
     private ArrayList<Earthquake> earthquakeArrayList;
-    private SavedQuakesRecyclerViewAdapter savedQuakesRecyclerViewAdapter;
+    private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
 
 
@@ -57,8 +57,8 @@ public class EarthquakeSaved extends Fragment{
 
         earthquakeArrayList = realmHelper.retrieve();
 
-        savedQuakesRecyclerViewAdapter = new SavedQuakesRecyclerViewAdapter(earthquakeArrayList,getContext());
-        recyclerView.setAdapter(savedQuakesRecyclerViewAdapter);
+        adapter = new SavedQuakesRecyclerViewAdapter(earthquakeArrayList,getContext());
+        recyclerView.setAdapter(adapter);
 
 
 
@@ -82,7 +82,7 @@ public class EarthquakeSaved extends Fragment{
         if (!getUserVisibleHint()){
             return;
         }
-        Toast.makeText(getContext(),"hi hello", Toast.LENGTH_SHORT).show();
+
         realmConfiguration = new RealmConfiguration.Builder(getContext()).build();
         realm = Realm.getInstance(realmConfiguration);
 
@@ -91,8 +91,8 @@ public class EarthquakeSaved extends Fragment{
 
         earthquakeArrayList = realmHelper.retrieve();
 
-        savedQuakesRecyclerViewAdapter = new SavedQuakesRecyclerViewAdapter(earthquakeArrayList,getContext());
-        recyclerView.setAdapter(savedQuakesRecyclerViewAdapter);
+        adapter = new SavedQuakesRecyclerViewAdapter(earthquakeArrayList,getContext());
+        recyclerView.setAdapter(adapter);
 
 
     }

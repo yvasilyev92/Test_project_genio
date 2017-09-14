@@ -45,9 +45,9 @@ public class SavedQuakesRecyclerViewAdapter extends RecyclerView.Adapter<SavedQu
         public ViewHolder(View itemView){
             super(itemView);
 
-            magTextview = (TextView) itemView.findViewById(R.id.magnitude);
-            locTextview = (TextView) itemView.findViewById(R.id.location);
-            cardView = (CardView) itemView.findViewById(R.id.mycardview);
+            magTextview = (TextView) itemView.findViewById(R.id.magnitude_saved);
+            locTextview = (TextView) itemView.findViewById(R.id.location_saved);
+            cardView = (CardView) itemView.findViewById(R.id.mycardviewsaved);
 
         }
 
@@ -61,7 +61,7 @@ public class SavedQuakesRecyclerViewAdapter extends RecyclerView.Adapter<SavedQu
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.list_item,parent,false);
+                R.layout.list_item_saved,parent,false);
 
         return new ViewHolder(view);
     }

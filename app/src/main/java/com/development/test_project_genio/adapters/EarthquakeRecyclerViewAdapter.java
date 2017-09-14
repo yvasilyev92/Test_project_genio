@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class EarthquakeRecyclerViewAdapter extends RecyclerView.Adapter<Earthqua
         public final TextView magTextview;
         public final TextView locTextview;
         public final CardView cardView;
+        public final ImageButton imageButton;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -54,6 +56,7 @@ public class EarthquakeRecyclerViewAdapter extends RecyclerView.Adapter<Earthqua
             magTextview = (TextView) itemView.findViewById(R.id.magnitude);
             locTextview = (TextView) itemView.findViewById(R.id.location);
             cardView = (CardView) itemView.findViewById(R.id.mycardview);
+            imageButton = (ImageButton) itemView.findViewById(R.id.saveButton);
 
         }
 
@@ -90,13 +93,12 @@ public class EarthquakeRecyclerViewAdapter extends RecyclerView.Adapter<Earthqua
         holder.locTextview.setText(earthquake.getLocation());
 
 
-        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public void onClick(View view) {
                 realmHelper = new RealmHelper(realm);
                 realmHelper.save(earthquake);
                 Toast.makeText(context,"Earthquake saved",Toast.LENGTH_SHORT).show();
-                return false;
             }
         });
 
