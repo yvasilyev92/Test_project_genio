@@ -1,6 +1,5 @@
 package com.development.test_project_genio;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.development.test_project_genio.adapters.EarthquakeRecyclerViewAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.development.test_project_genio.realm;
+package com.development.test_project_genio.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.development.test_project_genio.Earthquake;
 import com.development.test_project_genio.R;
+import com.development.test_project_genio.realm.RealmHelper;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -19,22 +20,23 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 /**
- * Created by Yevgeniy on 9/13/2017.
+ * Created by Yevgeniy on 9/11/2017.
  */
 
-
-public class SavedQuakesRecyclerViewAdapter extends RecyclerView.Adapter<SavedQuakesRecyclerViewAdapter.ViewHolder> {
+public class EarthquakeRecyclerViewAdapter extends RecyclerView.Adapter<EarthquakeRecyclerViewAdapter.ViewHolder> {
 
 
     private List<Earthquake> earthquakeList;
 
     private Context context;
 
+    private Realm realm;
+    private RealmConfiguration realmConfig;
+    private RealmHelper realmHelper;
 
 
 
-
-    public SavedQuakesRecyclerViewAdapter(List<Earthquake> earthquakeList, Context context){
+    public EarthquakeRecyclerViewAdapter(List<Earthquake> earthquakeList, Context context){
         this.earthquakeList = earthquakeList;
         this.context = context;
     }
@@ -67,6 +69,10 @@ public class SavedQuakesRecyclerViewAdapter extends RecyclerView.Adapter<SavedQu
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.list_item,parent,false);
 
+
+
+
+
         return new ViewHolder(view);
     }
 
@@ -75,10 +81,28 @@ public class SavedQuakesRecyclerViewAdapter extends RecyclerView.Adapter<SavedQu
     public void onBindViewHolder(ViewHolder holder, int position) {
 
 
+        realmConfig = new RealmConfiguration.Builder(context).build();
+        realm = Realm.getInstance(realmConfig);
+
         final Earthquake earthquake = earthquakeList.get(position);
 
         holder.magTextview.setText(formatMag(earthquake.getMagnitude()));
         holder.locTextview.setText(earthquake.getLocation());
+
+
+        holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                realmHelper = new RealmHelper(realm);
+                realmHelper.save(earthquake);
+                Toast.makeText(context,"Earthquake saved",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+
+
+
 
 
     }
