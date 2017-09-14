@@ -1,5 +1,8 @@
 package com.development.test_project_genio;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +38,7 @@ public class EarthquakeResults extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<Earthquake> earthquakeList;
+    private TextView noConnectionTextView;
     private static final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
 
@@ -46,15 +51,25 @@ public class EarthquakeResults extends Fragment {
 
 
         View view = inflater.inflate(R.layout.results_fragment,container,false);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_results);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
-        recyclerView.setHasFixedSize(true);
-
         earthquakeList = new ArrayList<>();
 
-        loadData();
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()){
+
+            recyclerView = (RecyclerView) view.findViewById(R.id.recyclerview_results);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
+            recyclerView.setHasFixedSize(true);
+            loadData();
+        } else {
+            noConnectionTextView = view.findViewById(R.id.empty_view);
+            noConnectionTextView.setText("No internet connection");
+        }
+
 
         return view;
 
