@@ -1,94 +1,83 @@
 package com.development.test_project_genio;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private RecyclerView recyclerView;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private RecyclerView.Adapter adapter;
-    private List<Earthquake> earthquakeList;
-    private static final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
+
+
+    private EarthquakeResults earthquakeResultsFragment;
+    private EarthquakeSaved earthquakeSavedFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tabbed);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
-        earthquakeList = new ArrayList<>();
+        earthquakeResultsFragment = new EarthquakeResults();
+        earthquakeSavedFragment = new EarthquakeSaved();
 
-        loadData();
+    }
+
+
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return earthquakeResultsFragment;
+                case 1:
+                    return earthquakeSavedFragment;
+            }
+            return null;
+        }
+
+        public int getCount() {
+            // Show 2 total pages.
+            return 2;
+        }
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Results";
+                case 1:
+                    return "Saved";
+            }
+            return null;
+        }
     }
 
 
-    private void loadData(){
 
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                USGS_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-
-                        try {
-                            JSONObject baseJsonResponse = new JSONObject(response);
-                            JSONArray earthquakeArray = baseJsonResponse.getJSONArray("features");
-
-                            for (int i = 0; i < earthquakeArray.length(); i++){
-
-                                JSONObject currentEarthquake = earthquakeArray.getJSONObject(i);
-                                JSONObject properties = currentEarthquake.getJSONObject("properties");
-
-                                double magnitude = properties.getDouble("mag");
-                                String location = properties.getString("place");
-
-                                Earthquake earthquake = new Earthquake(magnitude,location);
-                                earthquakeList.add(earthquake);
-                            }
-
-                            adapter = new EarthquakeRecyclerViewAdapter(earthquakeList,getApplicationContext());
-                            recyclerView.setAdapter(adapter);
-                        } catch (JSONException e){
-                            e.printStackTrace();
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
-
-    }
 
 }
