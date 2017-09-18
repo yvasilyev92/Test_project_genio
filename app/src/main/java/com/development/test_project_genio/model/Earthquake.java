@@ -1,4 +1,4 @@
-package com.development.test_project_genio;
+package com.development.test_project_genio.model;
 
 import io.realm.RealmObject;
 

@@ -1,6 +1,6 @@
 package com.development.test_project_genio.realm;
 
-import com.development.test_project_genio.Earthquake;
+import com.development.test_project_genio.model.Earthquake;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,12 @@ public class RealmHelper {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Earthquake earthquake1  = realm.copyToRealm(earthquake);
+                //Earthquake earthquake1  = realm.copyToRealm(earthquake);
+//                realm.copyFromRealm(earthquake);
+                Earthquake realmEarthquake = realm.createObject(Earthquake.class);
+                realmEarthquake.setMagnitude(earthquake.getMagnitude());
+                realmEarthquake.setLocation(earthquake.getLocation());
+                realm.copyToRealm(realmEarthquake);
             }
         });
 

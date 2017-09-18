@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.development.test_project_genio.Earthquake;
+import com.development.test_project_genio.model.Earthquake;
 import com.development.test_project_genio.R;
 
 import java.text.DecimalFormat;

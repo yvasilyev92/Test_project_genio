@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.development.test_project_genio.model.Earthquake;
 import com.development.test_project_genio.realm.RealmHelper;
 import com.development.test_project_genio.adapters.SavedQuakesRecyclerViewAdapter;
 
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+
 
 /**
  * Created by Yevgeniy on 9/12/2017.
@@ -26,7 +27,6 @@ public class EarthquakeSaved extends Fragment{
 
     private RealmHelper realmHelper;
     private Realm realm;
-    private RealmConfiguration realmConfiguration;
     private ArrayList<Earthquake> earthquakeArrayList;
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
@@ -41,6 +41,8 @@ public class EarthquakeSaved extends Fragment{
 
         super.onCreateView(inflater,container,savedInstanceState);
 
+        Realm.init(getContext());
+
 
         View view = inflater.inflate(R.layout.saved_fragment,container,false);
 
@@ -49,18 +51,12 @@ public class EarthquakeSaved extends Fragment{
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getBaseContext()));
 
 
-        realmConfiguration = new RealmConfiguration.Builder(getContext()).build();
-        realm = Realm.getInstance(realmConfiguration);
-
+        realm = Realm.getDefaultInstance();
         realmHelper = new RealmHelper(realm);
-
-
         earthquakeArrayList = realmHelper.retrieve();
 
         adapter = new SavedQuakesRecyclerViewAdapter(earthquakeArrayList,getContext());
         recyclerView.setAdapter(adapter);
-
-
 
         return view;
 
@@ -83,8 +79,8 @@ public class EarthquakeSaved extends Fragment{
             return;
         }
 
-        realmConfiguration = new RealmConfiguration.Builder(getContext()).build();
-        realm = Realm.getInstance(realmConfiguration);
+
+        realm = Realm.getDefaultInstance();
 
         realmHelper = new RealmHelper(realm);
 
@@ -93,7 +89,13 @@ public class EarthquakeSaved extends Fragment{
 
         adapter = new SavedQuakesRecyclerViewAdapter(earthquakeArrayList,getContext());
         recyclerView.setAdapter(adapter);
+    }
 
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

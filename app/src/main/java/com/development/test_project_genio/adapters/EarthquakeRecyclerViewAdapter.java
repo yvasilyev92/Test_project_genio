@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.development.test_project_genio.Earthquake;
+import com.development.test_project_genio.model.Earthquake;
 import com.development.test_project_genio.R;
 import com.development.test_project_genio.realm.RealmHelper;
 
@@ -32,7 +32,6 @@ public class EarthquakeRecyclerViewAdapter extends RecyclerView.Adapter<Earthqua
     private Context context;
 
     private Realm realm;
-    private RealmConfiguration realmConfig;
     private RealmHelper realmHelper;
 
 
@@ -84,8 +83,8 @@ public class EarthquakeRecyclerViewAdapter extends RecyclerView.Adapter<Earthqua
     public void onBindViewHolder(ViewHolder holder, int position) {
 
 
-        realmConfig = new RealmConfiguration.Builder(context).build();
-        realm = Realm.getInstance(realmConfig);
+
+        realm = Realm.getDefaultInstance();
 
         final Earthquake earthquake = earthquakeList.get(position);
 

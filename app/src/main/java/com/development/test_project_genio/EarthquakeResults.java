@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.development.test_project_genio.adapters.EarthquakeRecyclerViewAdapter;
+import com.development.test_project_genio.model.Earthquake;
 
 import org.json.JSONArray;
 import org.json.JSONException;
